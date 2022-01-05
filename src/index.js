@@ -1,22 +1,20 @@
 import React, { useEffect, useRef } from 'react'
-
-interface ComExposeProps {
-    children: any
-    readonly always?: boolean // 是否一直有效
-    // 曝光时的回调，若不存在always，则只执行一次
-    onExpose?: (dom: HTMLElement) => void
-    // 曝光后又隐藏的回调，若不存在always，则只执行一次
-    onHide?: (dom: HTMLElement) => void
-    observerOptions?: any // IntersectionObserver相关的配置
-}
-
+// interface ComExposeProps {
+//     children: any
+//     readonly always?: boolean // 是否一直有效
+//     // 曝光时的回调，若不存在always，则只执行一次
+//     onExpose?: (dom: HTMLElement) => void
+//     // 曝光后又隐藏的回调，若不存在always，则只执行一次
+//     onHide?: (dom: HTMLElement) => void
+//     observerOptions?: any // IntersectionObserver相关的配置
+// }
 /**
  * 监听元素的曝光
  * @param {ComExposeProps} props 要监听的元素和回调
  * @returns {JSX.Element}
  */
-const ComExpose = (props: ComExposeProps): JSX.Element => {
-    const ref = useRef<any>(null)
+const ComExpose = (props) => {
+    const ref = useRef(null)
     const curExpose = useRef(false)
     useEffect(() => {
         //todo
@@ -24,16 +22,16 @@ const ComExpose = (props: ComExposeProps): JSX.Element => {
             const target = ref.current
             // 配置参数
             const observerOptions = props?.observerOptions || {
-                threshold: [0, 0.5, 1],
+                threshold: [0.1, 0.5, 1],
             }
             // 回调参数
             const intersectionCallback = (
-                entries: IntersectionObserverEntry[]
+                entries
             ) => {
                 const [entry] = entries
                 if (entry.isIntersecting) {
                     if (
-                        entry.intersectionRatio >= observerOptions.threshold[1]
+                        entry.intersectionRatio >= observerOptions.threshold[0]
                     ) {
                         if (!curExpose.current) {
                             props?.onExpose?.(target)
