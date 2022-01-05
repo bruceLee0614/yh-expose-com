@@ -8,7 +8,7 @@
 ### 安装
 
 ``` bash
-npm install yh-compose-com -D
+npm install yh-compose-com
 ```
 
 ### 使用说明
